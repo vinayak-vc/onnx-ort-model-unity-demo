@@ -1,73 +1,57 @@
-## About The Project
+This project is POC to check the compatibility of "ORT" model in Unity to mobile platforms.
 
 **Project Overview and Unity Project Setup**
-
-This Proof of Concept (POC) project aims to assess the compatibility of the "ORT" model in Unity for mobile platforms.
-
-## Getting Started
-
-**Libraries Used**
-1. **onnxruntime Libraries**: Obtained from [GitHub - asus4](https://github.com/asus4)
-   - `com.github.asus4.onnxruntime`: Version 0.1.12
-   - `com.github.asus4.onnxruntime-extensions`: Version 0.1.12
-   - `com.github.asus4.onnxruntime.unity`: Version 0.1.12
-   - `com.github.asus4.texture-source`: Version 0.2.2
-   - If using Linux:
-     - `com.github.asus4.onnxruntime.linux-x64-gpu`: Version 0.1.12
-   - If using Windows:
-     - `com.github.asus4.onnxruntime.win-x64-gpu`: Version 0.1.12
-
-## Unity Project Setup:
-1. Add the following lines to your `manifest.json`:
-   ```json
+1. Used onnxruntime libraries by "https://github.com/asus4"
+2. List of libraries are
+   1."com.github.asus4.onnxruntime": "0.1.12"
+   2."com.github.asus4.onnxruntime-extensions": "0.1.12"
+   3."com.github.asus4.onnxruntime.unity": "0.1.12"
+   4."com.github.asus4.texture-source": "0.2.2"
+   if using Linux 
+     5.a. "com.github.asus4.onnxruntime.linux-x64-gpu": "0.1.12",
+   or
+     5.b. "com.github.asus4.onnxruntime.win-x64-gpu": "0.1.12"
+ Add these lines in "manifest.json"
+``
    "scopedRegistries": [
-     {
-       "name": "NPM",
-       "url": "https://registry.npmjs.com",
-       "scopes": [
-         "com.github.asus4"
-       ]
-     }
-   ],
-   "dependencies": {
-     "com.github.asus4.onnxruntime": "0.1.12",
-     "com.github.asus4.onnxruntime.unity": "0.1.12",
-     ... // other dependencies
-   }
+    {
+      "name": "NPM",
+      "url": "https://registry.npmjs.com",
+      "scopes": [
+        "com.github.asus4"
+      ]
+    }
+  ]
+  "dependencies": {
+    // Core library
+    "com.github.asus4.onnxruntime": "0.1.12",
+    // (Optional) Utilities for Unity
+    "com.github.asus4.onnxruntime.unity": "0.1.12",
+    ... other dependencies
+  }
+`` 
+3. Open up the scene Named "YoloX"
+4. This is the master script
+    ![image](https://github.com/vinayak-vc/onnx-ort-model-unity-demo/assets/47971927/999416d4-97d5-4897-8a1c-ef1eb754d644)
+    4.a Model Asset is the "ORT model"
+    4.b "Virtual Texture Source" will render the output the "Video Preview" Gameobejct
+    4.c Set the "Lable File" in "Options"
+       4.c.1 every new line will be considered as a new class
+    4.d Set the "Prob Threshold" as per the req
+    5.d Set the "Nms Threshold" as per the req
+ 5. ``runtimeModel = new YOLOXNew(modelAsset.bytes, options);`` This line will read the model
+ 6.  ``runtimeModel.Run(MinMaxLocExample.Resize(thistexture, 128, 128));`` this will convert the texture to the 128*128 and send ORT model for inference.
+ 7. ``
+      if (TryGetComponent(out VirtualTextureSource source)) {
+          virtualTextureSource = source;
+          source.OnTexture.AddListener(OnTexture);
+      }
+    `` This will create the texture from the "Virtual Texture Source" and send the event "OnTexture" (Just a technique to get the texture, can be changed as per need)
+8. ``public Action<List<YOLOXNew.Detection>> classificationCompleted;`` This action will be called when the inference with the model is completed.
+9. Check the "YOLOXNEW.cs" for Output formation in method "GenerateProposals(ReadOnlySpan<float> outputTensor, float prob_threshold)"
 
-## Usage
-
-1. Open the scene named "YoloX".
-2. Master Script Overview:
-    *   ![image](https://github.com/vinayak-vc/onnx-ort-model-unity-demo/assets/47971927/999416d4-97d5-4897-8a1c-ef1eb754d644)
-    *   Model Asset: Assign the "ORT model".
-    *   Virtual Texture Source: Renders the output to the "Video Preview" GameObject.
-    *   Label File: Set the file in "Options".
-        *   Each new line represents a new class.
-    *   Probability Threshold: Set as per requirements.
-    *   NMS Threshold: Set as per requirements.
-    *   Line of Inference:
-    *   runtimeModel = new YOLOXNew(modelAsset.bytes, options); - Reads the model.
-     *   runtimeModel.Run(MinMaxLocExample.Resize(thistexture, 128, 128)); - Converts the texture to 128x128 and sends it to the model for inference.
-4. Texture Handling:
-        If a VirtualTextureSource component exists, it creates the texture from it and triggers the event OnTexture.
-5. Event Handling:
-        public Action<List<YOLOXNew.Detection>> classificationCompleted; - Triggered when inference with the model is completed.
-6. Output Formation:
-        Check YOLOXNEW.cs for output formation in the method GenerateProposals(ReadOnlySpan<float> outputTensor, float prob_threshold).
    
-**Converting ONNX Model to ORT:**
-
-Use the following command to convert the model to ORT:
-
-```python -m onnxruntime.tools.convert_onnx_models_to_ort <onnx_model_file_or_directory>```
-
-This command exports the model to the ONNX model directory. Use -runtime.ort model for conversion.
-
-**Model Visualization**
-
-Inspect the input and output of the model on Netron.
-
 **Credits**
-
-The libraries used in this project are provided by asus4.
+[https://github.com/asus4](https://github.com/asus4)https://github.com/asus4
+[https://github.com/asus4/onnxruntime-unity](https://github.com/asus4/onnxruntime-unity)https://github.com/asus4/onnxruntime-unity
+[https://github.com/asus4/TextureSource](https://github.com/asus4/TextureSource)https://github.com/asus4/TextureSource
