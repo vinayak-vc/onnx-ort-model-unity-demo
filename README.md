@@ -47,14 +47,14 @@ This Proof of Concept (POC) project aims to assess the compatibility of the "ORT
     *   Probability Threshold: Set as per requirements.
     *   NMS Threshold: Set as per requirements.
     *   Line of Inference:
-    *   runtimeModel = new YOLOXNew(modelAsset.bytes, options); - Reads the model.
-     *   runtimeModel.Run(MinMaxLocExample.Resize(thistexture, 128, 128)); - Converts the texture to 128x128 and sends it to the model for inference.
+       *   ```runtimeModel = new YOLOXNew(modelAsset.bytes, options);``` - Reads the model.
+       *   ```runtimeModel.Run(MinMaxLocExample.Resize(thistexture, 128, 128));``` - Converts the texture to 128x128 and sends it to the model for inference.
 4. Texture Handling:
         If a VirtualTextureSource component exists, it creates the texture from it and triggers the event OnTexture.
 5. Event Handling:
-        public Action<List<YOLOXNew.Detection>> classificationCompleted; - Triggered when inference with the model is completed.
+        ```public Action<List<YOLOXNew.Detection>> classificationCompleted;``` - Triggered when inference with the model is completed.
 6. Output Formation:
-        Check YOLOXNEW.cs for output formation in the method GenerateProposals(ReadOnlySpan<float> outputTensor, float prob_threshold).
+        Check ```YOLOXNEW.cs``` for output formation in the method ```GenerateProposals(ReadOnlySpan<float> outputTensor, float prob_threshold)```.
    
 **Converting ONNX Model to ORT:**
 
@@ -66,8 +66,11 @@ This command exports the model to the ONNX model directory. Use -runtime.ort mod
 
 **Model Visualization**
 
-Inspect the input and output of the model on Netron.
+Inspect the input and output of the model on [Netron](https://netron.app/).
 
 **Credits**
+The libraries used in this project are provided by [https://github.com/asus4](https://github.com/asus4)https://github.com/asus4.
 
-The libraries used in this project are provided by asus4.
+[https://github.com/asus4/onnxruntime-unity](https://github.com/asus4/onnxruntime-unity)https://github.com/asus4/onnxruntime-unity
+
+[https://github.com/asus4/TextureSource](https://github.com/asus4/TextureSource)https://github.com/asus4/TextureSource
