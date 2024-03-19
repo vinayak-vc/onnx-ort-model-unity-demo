@@ -69,6 +69,7 @@ This command exports the model to the ONNX model directory. Use -runtime.ort mod
 Inspect the input and output of the model on [Netron](https://netron.app/).
 
 **Credits**
+
 The libraries used in this project are provided by [https://github.com/asus4](https://github.com/asus4) asus4.
 
 [https://github.com/asus4/onnxruntime-unity](https://github.com/asus4/onnxruntime-unity) onnxruntime-unity
